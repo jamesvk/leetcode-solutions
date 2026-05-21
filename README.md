@@ -19,3 +19,5 @@ Each solution includes:
 - Day 1: Merge Strings Alternately - O(n) time O(n) space
 
 - Day 2: Greatest Common Divisor of Strings - Approach 1: O(min(m,n)×(m+n)) time O(min(m,n)) space | Approach 2: O(m+n) time and space
+
+- Day 3: Kids With the Greatest Number of Candies - O(n) time O(n) space (optimal)
