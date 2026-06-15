@@ -1,0 +1,57 @@
+// MY SOLUTION
+var reverseVowels = function (s) {
+  let vowels = ['A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u'];
+  let strArr = s.split('');
+  let arr = [];
+
+  for (let i = 0; i < strArr.length; i++) {
+    if (vowels.includes(strArr[i])) {
+      arr.push(strArr[i]);
+    }
+  }
+
+  arr.reverse();
+
+  for (let i = 0; i < strArr.length; i++) {
+    if (!arr.length) break;
+    if (vowels.includes(strArr[i])) {
+      strArr[i] = arr[0];
+      arr.shift();
+    }
+  }
+
+  return strArr.join('');
+};
+
+// TIME: O(n) — two passes through string
+// SPACE: O(n) — storing vowels array + collected array
+
+// OPTIMAL SOLUTION
+// Improvements:
+// - Set.has() = O(1) lookup vs array.includes() = O(n)
+// - pointer increment = O(1) vs arr.shift() = O(n)
+
+var reverseVowels = function (s) {
+  const vowels = new Set(['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']);
+  const arr = s.split('');
+  const collected = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    if (vowels.has(arr[i])) collected.push(arr[i]);
+  }
+
+  collected.reverse();
+
+  let pointer = 0;
+  for (let i = 0; i < arr.length; i++) {
+    if (vowels.has(arr[i])) {
+      arr[i] = collected[pointer];
+      pointer++;
+    }
+  }
+
+  return arr.join('');
+};
+
+// TIME: O(n) — two passes through string
+// SPACE: O(n) — Set + collected array
