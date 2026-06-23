@@ -1,0 +1,14 @@
+// MY SOLUTION - Approach 1 (Two Pointers)
+var isSubsequence = function(s, t) {
+    let left = 0;
+
+    for (let i = 0; i < t.length && left < s.length; i++) {
+        if (s[left] === t[i]) left++;
+    }
+
+    return left === s.length;
+};
+
+// TIME: O(n) — one pass through t where n is t.length
+// SPACE: O(1) — two fixed variables (left, i) regardless of input size.
+//               No copies or additional strings created.

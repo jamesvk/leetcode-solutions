@@ -1,0 +1,15 @@
+// MY SOLUTION - Approach 1 (Running Sum + Max Tracker)
+var largestAltitude = function (gain) {
+  let hA = 0;
+  let current = 0;
+
+  for (let i = 0; i < gain.length; i++) {
+    current += gain[i];
+    if (current > hA) hA = current;
+  }
+
+  return hA;
+};
+
+// TIME: O(n) — one pass through the gain array
+// SPACE: O(1) — two fixed variables regardless of input size

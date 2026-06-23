@@ -1,0 +1,17 @@
+// MY SOLUTION - Approach 1 (Sliding Window)
+var findMaxAverage = function(nums, k) {
+    let sum = nums.slice(0, k).reduce((acc, num) => acc + num, 0);
+    let maxSum = sum;
+
+    for (let i = 1; i <= nums.length - k; i++) {
+        sum = sum - nums[i - 1] + nums[i + k - 1];
+        if (sum > maxSum) maxSum = sum;
+    }
+
+    return maxSum / k;
+};
+
+// TIME: O(n) — initial window O(k) + loop O(n-k) = O(n)
+//              sliding window avoids recomputing entire sum each step
+// SPACE: O(1) — four fixed variables (sum, maxSum, i, accumulator)
+//               no new arrays created

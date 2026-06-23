@@ -1,0 +1,17 @@
+// MY SOLUTION - Approach 1 (Two Pointers)
+var moveZeroes = function(nums) {
+    let left = 0;
+
+    for (let right = 0; right < nums.length; right++) {
+        if (nums[right] !== 0) {
+            let temp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = temp;
+            left++;
+        }
+    }
+};
+
+// TIME: O(n) — one pass through the entire array with right pointer
+// SPACE: O(1) — only two fixed variables (left, temp) regardless of input size. 
+//               No new arrays created — all swaps happen in-place
