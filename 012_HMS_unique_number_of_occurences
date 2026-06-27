@@ -1,0 +1,40 @@
+/**
+ * LeetCode 1207 — Unique Number of Occurrences
+ * https://leetcode.com/problems/unique-number-of-occurrences/
+ *
+ * Patterns: Frequency Counter + Set-for-Uniqueness
+ *
+ * --- Intuition ---
+ * Count the occurrences of each value in the array using a hash map (value -> count).
+ * Then put those counts into a set. If the map and the set have different sizes, two
+ * values shared a count — meaning the occurrence counts are not unique.
+ *
+ * --- Approach ---
+ * Loop through the array with for...of and tally each number's count in a Map using
+ * counts.set(num, (counts.get(num) ?? 0) + 1). Then build a Set from the map's values.
+ * Compare .size on each: if they match, all counts are unique; if the set is smaller,
+ * a duplicate count was dropped.
+ *
+ * --- Complexity ---
+ * Time: O(n)
+ *   One pass to count the array and one pass to build the set from the map's values;
+ *   O(2n) -> O(n).
+ * Space: O(n)
+ *   The map holds up to n entries and the set holds up to n values; O(2n) -> O(n).
+ *
+ * --- Note to self ---
+ * .size is a PROPERTY (no parens). .values() is a METHOD that returns an ITERATOR
+ * (a dispenser, not an array) — no .length, no indexing. Use .size on the Map/Set.
+ * Frequency counter idiom: map.set(x, (map.get(x) ?? 0) + 1).
+ */
+ 
+function uniqueOccurrences(arr: number[]): boolean {
+  const counts = new Map<number, number>();
+ 
+  for (const num of arr) {
+    counts.set(num, (counts.get(num) ?? 0) + 1);
+  }
+ 
+  const countsSet = new Set<number>(counts.values());
+  return counts.size === countsSet.size;
+}
