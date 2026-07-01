@@ -1,0 +1,52 @@
+/**
+ * LeetCode 933 — Number of Recent Calls
+ * https://leetcode.com/problems/number-of-recent-calls/
+ *
+ * Pattern: Queue (FIFO) — sliding window of recent items
+ *
+ * --- Intuition ---
+ * Push each new ping (a number) into an array, and remove any pings that fall
+ * outside the 3000ms window. The array's length is the count of recent pings.
+ *
+ * --- Approach ---
+ * Use this.queue.push(t) to add the new ping to the back. Then run a while loop
+ * that removes stale pings from the front: while the first item is outside the
+ * window (this.queue[0] < t - 3000), remove it with this.queue.shift(). Stop once
+ * the front is within the window. Return this.queue.length.
+ *
+ * --- Complexity ---
+ * Time: O(1) amortized.
+ *   A single ping is O(n) worst case (it could shift many stale items at once). But
+ *   each element is pushed exactly once and shifted off at most once — so across n
+ *   pings, total work is ~2n operations (n pushes + at most n shifts). 2n / n = 2 -> O(1).
+ * Space: O(n).
+ *   The array grows and shrinks, but at any moment holds up to n pings within the
+ *   3000ms window. Space is measured by the maximum the structure can hold at once.
+ *
+ * --- Notes to self ---
+ * - Class (not a plain function) because the counter must REMEMBER pings across
+ *   multiple calls. A function forgets between calls; an instance holds state.
+ * - private queue: only the class's own methods (via this.queue) can touch it;
+ *   outside code can't reach in. Access is this.queue regardless of where initialized.
+ * - Amortized O(1): the expensive shift is capped because each element can only be
+ *   removed once (can't shift more than you pushed).
+ * - RE-SOLVE COLD in a few days — got more help than usual on the algorithm.
+ */
+
+class RecentCounter {
+  private queue: number[] = [];
+
+  ping(t: number): number {
+    this.queue.push(t);
+    while (this.queue[0] < t - 3000) {
+      this.queue.shift();
+    }
+    return this.queue.length;
+  }
+}
+
+/**
+ * Your RecentCounter object will be instantiated and called as such:
+ * var obj = new RecentCounter()
+ * var param_1 = obj.ping(t)
+ */

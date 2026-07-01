@@ -27,14 +27,14 @@
  * (a dispenser, not an array) — no .length, no indexing. Use .size on the Map/Set.
  * Frequency counter idiom: map.set(x, (map.get(x) ?? 0) + 1).
  */
- 
+
 function uniqueOccurrences(arr: number[]): boolean {
   const counts = new Map<number, number>();
- 
+
   for (const num of arr) {
     counts.set(num, (counts.get(num) ?? 0) + 1);
   }
- 
+
   const countsSet = new Set<number>(counts.values());
   return counts.size === countsSet.size;
 }
