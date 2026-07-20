@@ -1,40 +1,34 @@
-Consider all the leaves of a binary tree, read left to right — 
-that ordered sequence of leaf values is the tree's leaf value sequence. 
-Two trees are leaf-similar if their leaf value sequences are identical. 
-Given the roots of two trees, return true if they're leaf-similar, else false. 
-A leaf is a node with no children. Example: a tree whose leaves read [6, 7, 4, 9, 8] 
-is leaf-similar to any other tree whose leaves also read [6, 7, 4, 9, 8], 
-regardless of internal shape.
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
 
-class TreeNode {
-  val: number;
-  left: TreeNode | null;
-  right: TreeNode | null;
-  constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
-    this.val = val === undefined ? 0 : val;
-    this.left = left === undefined ? null : left;
-    this.right = right === undefined ? null : right;
-  }
+function searchBST(root: TreeNode | null, val: number): TreeNode | null {
+  if (root.val === val || root.val === null) return root;
+
+  if (val < root.val) searchBST(root.left, val);
+  if (val > root.val) searchBST(root.right, val);
+
+  return null;
 }
 
-function leafSimilar(root1: TreeNode | null, root2: TreeNode | null): boolean {
-    const leaves1: number[] = [];
-    const leaves2: number[] = [];
+function searchBST(root: TreeNode | null, val: number): TreeNode | null {
+  let returnNode: TreeNode | null = root;
 
-    function collectLeaves(node: TreeNode | null, leaves: number[]): void {
-        if (!node) return;
-        if (!node.left && !node.right) {
-            leaves.push(node.val);
-        }
-        collectLeaves(node.left, leaves)
-        collectLeaves(node.right, leaves)
-        
-    }
+  while (returnNode !== null) {
+    if (returnNode.val === val) break;
+    if (val > returnNode.val) returnNode = returnNode.right;
+    else returnNode = returnNode.left;
+  }
 
-    collectLeaves(root1, leaves1);
-    collectLeaves(root2, leaves2);
-
-    return leaves1.join(",") === leaves2.join(",");
-
-    // need to return the array comparison
+  return returnNode;
 }

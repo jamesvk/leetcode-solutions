@@ -1,0 +1,66 @@
+/**
+ * LeetCode 700 — Search in a Binary Search Tree
+ * --------------------------------------------
+ * Given the root of a BST and a target value, return the subtree rooted at
+ * the node whose value equals the target, or null if it isn't present.
+ *
+ * KEY PROPERTY: every value in a node's left subtree is smaller than that
+ * node, and every value in its right subtree is larger. One comparison per
+ * node therefore eliminates an entire side — no full traversal needed.
+ *
+ * Two implementations below:
+ *   - Recursive: O(h) time, O(h) space (one call frame per level).
+ *   - Iterative: O(h) time, O(1) space (single reassigned pointer).
+ *   Iterative is strictly better on space; the recursion is in tail position
+ *   (nothing accumulates after the call), which is why it flattens to a loop.
+ *
+ * Solve status: COLD — both versions written from a blank file, 7/20.
+ * Watch on redo: the direction convention. `val < node.val` → go LEFT.
+ * Keep that phrasing identical across both versions so it can't invert.
+ */
+
+class TreeNode {
+  val: number;
+  left: TreeNode | null;
+  right: TreeNode | null;
+  constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+    this.val = val === undefined ? 0 : val;
+    this.left = left === undefined ? null : left;
+    this.right = right === undefined ? null : right;
+  }
+}
+
+function searchBST(root: TreeNode | null, val: number): TreeNode | null {
+  if (root.val === val || root.val === null) return root;
+
+  if (val < root.val) searchBST(root.left, val);
+  if (val > root.val) searchBST(root.right, val);
+
+  return null;
+}
+
+function searchBSTIterative(
+  root: TreeNode | null,
+  val: number,
+): TreeNode | null {
+  let returnNode: TreeNode | null = root;
+
+  while (returnNode !== null) {
+    if (returnNode.val === val) break;
+    if (val > returnNode.val) returnNode = returnNode.right;
+    else returnNode = returnNode.left;
+  }
+
+  return returnNode;
+}
+
+/**
+ * Complexity
+ *   Time:  O(h) for both — one comparison per level, h = height.
+ *          O(log n) balanced, O(n) skewed (a skewed BST is a linked list).
+ *   Space: recursive O(h) — call stack holds one frame per level.
+ *          iterative O(1) — one pointer, reassigned as it descends.
+ *   Time is optimal; the iterative version is optimal on space.
+ */
+
+export { searchBST, searchBSTIterative, TreeNode };
