@@ -1,34 +1,28 @@
-/**
- * Definition for a binary tree node.
- * class TreeNode {
- *     val: number
- *     left: TreeNode | null
- *     right: TreeNode | null
- *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
- *         this.val = (val===undefined ? 0 : val)
- *         this.left = (left===undefined ? null : left)
- *         this.right = (right===undefined ? null : right)
- *     }
- * }
+/** 
+ * Forward declaration of guess API.
+ * @param {number} num   your guess
+ * @return 	     -1 if num is higher than the picked number
+ *			      1 if num is lower than the picked number
+ *               otherwise return 0
+ * var guess = function(num) {}
  */
 
-function searchBST(root: TreeNode | null, val: number): TreeNode | null {
-  if (root.val === val || root.val === null) return root;
 
-  if (val < root.val) searchBST(root.left, val);
-  if (val > root.val) searchBST(root.right, val);
+function guessNumber(n: number): number {
+  let low: number = 1;
+  let high: number = n;
 
-  return null;
-}
-
-function searchBST(root: TreeNode | null, val: number): TreeNode | null {
-  let returnNode: TreeNode | null = root;
-
-  while (returnNode !== null) {
-    if (returnNode.val === val) break;
-    if (val > returnNode.val) returnNode = returnNode.right;
-    else returnNode = returnNode.left;
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2);
+    if (!guess(mid)) return mid;
+    if (guess(mid) === -1) high = mid;
+    low = mid;
   }
+};
 
-  return returnNode;
-}
+ while (low <= high) {
+        const mid = Math.floor((low + high) / 2));
+        if (!guess(mid)) return mid;
+        if (guess(mid) === -1) high = mid;
+        low = mid;
+    }
