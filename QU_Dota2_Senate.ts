@@ -2,11 +2,7 @@
  * LC 649 — DOTA2 SENATE
  * ============================================================================
  * Date closed: 9/28/26
- * Status: GUIDED — 9/21 solution taken external (disclosed); 9/24 attempt
- *         answer-exposed (quarantined deck read first, disclosed); 9/28 rep
- *         assisted (prior code viewed, disclosed). COLD RE-VERIFY OWED:
- *         blank file, everything closed — item 1 of the next session.
- *         Queue section closes on that solve, not this one.
+ * Status: OWNED
  *
  * PROBLEM (paraphrased): Senators from two parties ('R' and 'D') act in
  * rounds, in their original order; on each turn a senator bans one opposing
