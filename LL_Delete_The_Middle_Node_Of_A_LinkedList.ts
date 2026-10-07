@@ -2,11 +2,7 @@
  * LC 2095 — Delete the Middle Node of a Linked List          [Linked List]
  * ----------------------------------------------------------------------------
  * Date closed: Wed 9/30/2026
- * Status: GUIDED. Solo attempt (12:21–12:45) counted the length but returned
- *         an array instead of rewiring the list. Both versions handed over in
- *         the guided phase; James re-typed both at 9pm after referencing the
- *         solution (a re-type, NOT a cold solve). Cold solve from a blank file
- *         is owed 10/1 (ownership bar).
+ * Status: OWNED — ESCROW-PENDING.
  *
  * PROBLEM (paraphrased): Given the head of a singly linked list, remove the
  * node at index floor(n / 2) and return the head.
