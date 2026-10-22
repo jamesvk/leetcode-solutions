@@ -1,25 +1,29 @@
-function leafSimilar(root1: TreeNode | null, root2: TreeNode | null): boolean {
-  const a: number[] = [];
-  const b: number[] = [];
-  helper(root1, a);
-  helper(root2, b);
-
-  if (a.length !== b.length) return false;
-  for (let i = 0; i < a.length; i++) {
-    if (a[i] !== b[i]) return false;
-  }
-
-  return true;
+function pathSum(root: TreeNode | null, targetSum: number): number {
+  const map = new Map<number, number>([[0, 1]]);
+  return helper(root, targetSum, 0, map);
 }
 
-function helper(root: TreeNode | null, leaves: number[]): void {
-  if (root === null) return [];
-  const result: number[] = [];
+function helper(
+  root: TreeNode | null,
+  targetSum: number,
+  total: number,
+  map: Map<number, number>,
+): number {
+  if (root === null) return 0;
 
-  if (root.left === null && root.right === null) {
-    leaves.push(root.val);
-    return;
-  }
-  helper(root.left, leaves);
-  helper(root.right, leaves);
+  let answer: number = 0;
+  if (root.val === targetSum) answer++;
+
+  let newTotal: number = total + root.val;
+  let diff: number = newTotal - targetSum;
+  if (map.get(diff)) answer++;
+
+  map.set(newTotal, (map.get(newTotal) ?? 0) + 1);
+
+  answer += helper(root.left, targetSum, newTotal, map);
+  answer += helper(root.right, targetSum, newTotal, map);
+
+  map.set(newTotal, map.get(newTotal)! - 1);
+
+  return answer;
 }
