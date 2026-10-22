@@ -7,11 +7,12 @@
  *  Status: GUIDED
  *    - Design reproduced COLD from a blank file: running total carried
  *      down, map seeded {0:1}, lookup of (total - target), decrement
- *      on the way back up. (Bar for today met at the design level.)
+ *      on the way back up.
  *    - Disclosed assist: looked up Map get/set syntax (syntax only).
  *    - Two counting bugs fixed with coaching; full solution requested
  *      at 12:56 pm. Green submit 1:02 pm.
- *    - Next-day cold redo from a blank file owed.
+ *    - Lines marked (coach-supplied) were written by the coach at his
+ *      direction, 1:11 pm. Next-day cold redo from a blank file owed.
  *
  *  PROBLEM (paraphrased): Count every path in a binary tree whose node
  *  values add up to targetSum. A path must go downward (parent to
@@ -26,17 +27,32 @@
  *    - Node values can be 0, so we need to account for this: 3-5 and
  *      3-5-0 would be two different paths that hit the target of 8.
  *      (his line)
- *    - [0, 1000] nodes: OWED (bans / permits / warns / gifts?)
- *    - Negative values allowed: OWED
- *    - targetSum can be 0 or negative: OWED
+ *    - [0, 1000] nodes: PERMITS a brute force that starts a walk from
+ *      every node (1000 x 1000 = 10^6 steps), but the map version does
+ *      it in one pass. GIFT/WARN: 0 nodes is legal, so an empty tree
+ *      must return 0 — the null check covers it. (coach-supplied)
+ *    - Values from -10^9 to 10^9: WARNS that totals can reach
+ *      1000 x 10^9 = 10^12. Safe in JavaScript numbers (exact up to
+ *      about 9 x 10^15); it would overflow a 32-bit int in Java or C++.
+ *      Negatives also WARN that the same total can show up more than
+ *      once, so add the COUNT, not 1. (coach-supplied)
+ *    - targetSum can be 0 or negative: WARNS that a node can match its
+ *      OWN total if you set before you look. Check first, then set.
+ *      (coach-supplied)
  *
  *  STEP 2: ONE PLAIN SENTENCE
  *    Return the total number of downward paths that add up to the
- *    target sum. (Unit = OWED — name what one "count" is.)
+ *    target sum. (Unit = one downward path: a start node and an end
+ *    node, start at or above end, whose values add up to the target.)
+ *    (unit coach-supplied)
  *
- *  STEP 3: PATTERN CUE
- *    Pattern name: OWED (blank at delivery).
- *    Phrase found in the statement: OWED.
+ *  STEP 3: PATTERN CUE (coach-supplied)
+ *    Pattern name: prefix sum on a tree path — a running total carried
+ *    down, a map of totals already seen on the current path, and the
+ *    total removed on the way back up.
+ *    Phrase found in the statement: "the path does not need to start
+ *    or end at the root or a leaf, but it must go downwards" + "sum of
+ *    the values equals targetSum."
  *
  *  INTUITION
  *    The key realization is that if you know the total distance
@@ -45,10 +61,10 @@
  *
  *  APPROACH
  *    1. Use a map to track every total distance traveled so far.
- *       Initialize it with {0:1}.
- *       (His reason: "since that is the starting point." Half right —
- *       the full reason is OWED: what does a path that starts at the
- *       root need to find in the map?)
+ *       Initialize it with {0:1}. The reason: a path that starts at the
+ *       root has nothing before it, so its difference is exactly 0 —
+ *       the {0:1} seed is what lets the lookup find it.
+ *       (reason coach-supplied)
  *    2. Call a helper with the root, a running total of 0, the target
  *       sum, and the map.
  *    3. At each node, calculate the new total.
@@ -76,15 +92,25 @@
  *       the {0:1} seed already finds single-node paths.
  *       On [0, 0], target 0 -> returned 4, correct is 3.
  *
- *  ROWS (Example 1, target 8 — his rows, new map key only per row)
- *    curr | total | diff | added    | found
- *    10   | 10    | 2    | {10:1}   | no
- *    5    | 15    | 7    | {15:1}   | no
- *    3    | 18    | 10   | {18:1}   | yes
- *    3    | 21    | 13   | {21:1}   | (not written)
- *         |       |      | 21 removed
- *    -2   | 19    | 11   | {19:1}   | no
- *    Rows to the output (3): NOT PRODUCED. Owed.
+ *  ROWS — Example 1: root = [10,5,-3,3,2,null,11,3,-2,null,1], target 8
+ *    Correct code (check first, then set). "map hit" = count of diff in
+ *    the map at lookup. New key added after the lookup; removed on the
+ *    way back up. (rows 1–3 his; rest coach-supplied; his -2 row had
+ *    total 19 — corrected to 16, since 18 + (-2) = 16)
+ *    curr | total | diff | map hit | answer so far | then
+ *    10   | 10    | 2    | 0       | 0             | add 10
+ *    5    | 15    | 7    | 0       | 0             | add 15
+ *    3    | 18    | 10   | 1 (10)  | 1  (5->3)     | add 18
+ *    3    | 21    | 13   | 0       | 1             | add 21, remove 21
+ *    -2   | 16    | 8    | 0       | 1             | add 16, remove 16
+ *         |       |      |         |               | remove 18
+ *    2    | 17    | 9    | 0       | 1             | add 17
+ *    1    | 18    | 10   | 1 (10)  | 2  (5->2->1)  | add 18, remove 18
+ *         |       |      |         |               | remove 17, remove 15
+ *    -3   | 7     | -1   | 0       | 2             | add 7
+ *    11   | 18    | 10   | 1 (10)  | 3  (-3->11)   | add 18, remove 18
+ *         |       |      |         |               | remove 7, remove 10
+ *    OUTPUT: 3 ✓
  *
  *  COMPLEXITY (evidence first, then label)
  *    Time — evidence: every node is visited once, and each map

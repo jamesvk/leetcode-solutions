@@ -1,29 +1,15 @@
-function pathSum(root: TreeNode | null, targetSum: number): number {
-  const map = new Map<number, number>([[0, 1]]);
-  return helper(root, targetSum, 0, map);
+function goodNodes(root: TreeNode | null): number {
+  return helper(root, -Infinity);
 }
 
-function helper(
-  root: TreeNode | null,
-  targetSum: number,
-  total: number,
-  map: Map<number, number>,
-): number {
+function helper(root: TreeNode | null, max: number): number {
   if (root === null) return 0;
+  let answer: number = root.val >= max ? 1 : 0;
 
-  let answer: number = 0;
-  if (root.val === targetSum) answer++;
+  let newMax: number = Math.max(max, root.val);
 
-  let newTotal: number = total + root.val;
-  let diff: number = newTotal - targetSum;
-  if (map.get(diff)) answer++;
-
-  map.set(newTotal, (map.get(newTotal) ?? 0) + 1);
-
-  answer += helper(root.left, targetSum, newTotal, map);
-  answer += helper(root.right, targetSum, newTotal, map);
-
-  map.set(newTotal, map.get(newTotal)! - 1);
+  answer += helper(root.left, newMax);
+  answer += helper(root.right, newMax);
 
   return answer;
 }
