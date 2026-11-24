@@ -12,27 +12,30 @@
  * }
  */
 
-/*
-bt-bfs
-constraints tell us that 0/empty arrays exist (base case)
+function maxLevelSum(root: TreeNode | null): number {
+  let answer: number = 0;
+  let max: number = -Infinity;
+  let level: number = 1;
 
-*/
-function rightSideView(root: TreeNode | null): number[] {
-  const answer: number[] = [];
-  if (root === null) return answer;
+  let next: TreeNode[] = [root];
 
-  let queue: TreeNode[] = [root];
+  while (next.length) {
+    const children: TreeNode[] = [];
+    let sum: number = 0;
 
-  while (queue.length) {
-    answer.push(queue[queue.length - 1].val);
-
-    const next: TreeNode[] = [];
-    for (const node of queue) {
-      if (node.left) next.push(node.left);
-      if (node.right) next.push(node.right);
+    for (const node of next) {
+      sum += node.val;
+      if (node.left) children.push(node.left);
+      if (node.right) children.push(node.right);
     }
 
-    queue = next;
+    if (sum > max) {
+      max = sum;
+      answer = level;
+    }
+    next = children;
+
+    level++;
   }
 
   return answer;
